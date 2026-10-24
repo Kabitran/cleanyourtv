@@ -36,6 +36,8 @@ final class RemoteKeys {
 
     /** The app_keys target that opens the input switcher, as "scan:365:inputs". */
     static final String INPUTS = "inputs";
+    /** Settings.ACTION_USER_SETTINGS, which the public SDK hides: Android TV opens accounts and profiles with it. */
+    static final String ACTION_USER_SETTINGS = "android.settings.USER_SETTINGS";
 
     private RemoteKeys() { }
 
@@ -179,7 +181,7 @@ final class RemoteKeys {
     static boolean isAction(String target) {
         switch (target) {
             case "back": case "home": case "recents": case "mute": case "sleep":
-            case "screensaver": case "settings": case "wifi":
+            case "screensaver": case "settings": case "wifi": case "accounts":
                 return true;
             default:
                 return false;
@@ -214,6 +216,11 @@ final class RemoteKeys {
                 break;
             case "wifi":
                 start(ctx, SystemSettings.intent(ctx, Settings.ACTION_WIFI_SETTINGS));
+                break;
+            case "accounts":
+                // The accounts and profiles screen, for a remote's profile (User) button that only the stock Google TV
+                // launcher answered (KEYCODE_PROFILE_SWITCH on a Skyworth SWTV-22AE).
+                start(ctx, SystemSettings.intent(ctx, ACTION_USER_SETTINGS));
                 break;
             default:
                 break;   // "sleep" below Android 9: consumed, nothing to do
